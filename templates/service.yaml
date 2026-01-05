@@ -13,9 +13,6 @@ spec:
   type: {{ .type }}
   selector:
     app.kubernetes.io/name: {{ include "omnix.fullname" $ }}
-    {{- range $key, $value := $.Values.global.labels}}
-    {{ $key }}: {{ $value}}
-    {{- end}}
   ports:       
     {{- range $key, $value := $.Values.ports}}
     - name: {{ $key }}

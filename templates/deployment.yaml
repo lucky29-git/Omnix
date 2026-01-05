@@ -23,9 +23,6 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "omnix.fullname" $ }}
-      {{- range $key, $value := .Values.pod.labels }}
-      {{ $key }}: {{ $value }}
-      {{- end }}
   {{- with .Values.deployment.strategy }}
   strategy: 
     type: {{ .type }}
@@ -40,9 +37,6 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "omnix.fullname" $ }}
-        {{- range $key, $value := .Values.pod.labels }}
-        {{ $key }}: {{ $value }}
-        {{- end }}
       {{- with .Values.pod.annotations }}
       annotations: 
         {{- range $key, $value := .}}

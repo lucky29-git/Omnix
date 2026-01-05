@@ -2,20 +2,20 @@
 
 # Basic naming configuration
 nameOverride: ""
-fullnameOverride: my-application
+fullnameOverride: my-go-app
 namespaceOverride: ""
 
 # Global labels applied to all resources
 global:
-  labels:
-    app: my-app
-    environment: production
+  labels: {}
+    # application: my-app
+    # environment: production
 
 # Deployment configuration
 deployment:
   serviceAccountName: ""  # Optional: custom service account name, defaults to fullname
-  labels:
-    deployment-label: custom-deployment
+  labels: {}
+    # deployment-label: custom-deployment
   annotations:
     description: "Example deployment"
   strategy:
@@ -25,22 +25,23 @@ deployment:
       maxSurge: 1
 
 # Pod configuration
-pod:
-  labels:
-    pod-label: custom-pod
-  annotations:
-    prometheus.io/scrape: "true"
+pod: 
+  labels: {}
+    # pod-label: custom-pod
+    # hello: hii
+  annotations: {}
+    # prometheus.io/scrape: "true"
 
 # Number of replicas
-replicaCount: 2
+replicaCount: 1
 
 # Image pull secrets for private registries - Manually deploy it.
-imagePullSecrets:
-  - name: gcp-pull-secret       
+imagePullSecrets: {}
+  # - name: gcp-pull-secret       
 
 # Service account configuration
 serviceAccount:
-  enable: true
+  enable: false
   labels:
     sa-label: custom-sa
   annotations:
@@ -48,100 +49,100 @@ serviceAccount:
   automountServiceAccountToken: true
 
 # Pod security context
-securityContext:
-  runAsUser: 1000
-  runAsGroup: 3000
-  fsGroup: 2000
+securityContext: []
+  # runAsUser: 1000
+  # runAsGroup: 3000
+  # fsGroup: 2000
 
 # Node selector for pod placement
-nodeSelector:
-  workload: general-purpose
-  zone: us-west-1a
+nodeSelector: []
+  # workload: general-purpose
+  # zone: us-west-1a
 
 # Volumes - Mount files from chart's files/ directory
-volumes:
-  - name: nginx-config
-    type: configMap
-    mountPath: /etc/nginx/nginx.conf
-    subPath: nginx.conf
-    files:
-      - key: nginx.conf
-        path: files/configmap/nginx.conf
+volumes: {}
+  # - name: nginx-config
+  #   type: configMap
+  #   mountPath: /etc/nginx/nginx.conf
+  #   subPath: nginx.conf
+  #   files:
+  #     - key: nginx.conf
+  #       path: files/configmap/nginx.conf
 
-  - name: ssl-certs
-    type: configMap
-    mountPath: /etc/ssl/certs
-    files:
-      - key: cert.pem
-        path: files/configmap/ssl/cert.pem
-      - key: key.pem
-        path: files/configmap/ssl/key.pem
+  # - name: ssl-certs
+  #   type: configMap
+  #   mountPath: /etc/ssl/certs
+  #   files:
+  #     - key: cert.pem
+  #       path: files/configmap/ssl/cert.pem
+  #     - key: key.pem
+  #       path: files/configmap/ssl/key.pem
 
 # Container image configuration
 image:
-  name: nginx
-  tag: "1.21"
-  pullPolicy: IfNotPresent
+  name: us-central1-docker.pkg.dev/focal-psyche-460009-a5/bifrost/go-api
+  tag: v1
+  # pullPolicy: IfNotPresent
 
 # Override container command
-containerCmd:
-  - "/bin/sh"
-  - "-c"
-  - "echo Starting application && exec nginx -g 'daemon off;'"
+containerCmd: {}
+  # - "/bin/sh"
+  # - "-c"
+  # - "echo Starting application && exec nginx -g 'daemon off;'"
 
 # Container arguments
-containerArgs:
-  - "--config=/etc/config/app.conf"
+containerArgs: {}
+  # - "--config=/etc/config/app.conf"
 
 # Container ports
 ports:
-  http: 80
-  https: 443
+  http: 8080
+  # https: 443
   grpc: 50051
 
 # Direct environment variables (key-value pairs)
-env:
-  LOG_LEVEL: "info"
-  ENVIRONMENT: "production"
-  FEATURE_FLAG_ENABLED: "true"
+env: []
+  # LOG_LEVEL: "info"
+  # ENVIRONMENT: "production"
+  # FEATURE_FLAG_ENABLED: "true"
 
 # Environment variables from ConfigMaps/Secrets
 # Files should be in YAML format in files/ directory
-envFrom:
+envFrom: 
   # Load all keys from ConfigMap as environment variables
   - name: app-config
     type: configMap
     files:
       - path: files/configmap/app-config.yaml
 
-  # Load all keys from Secret as environment variables
-  - name: app-secrets
-    type: secret
-    secretType: Opaque  # Optional, defaults to Opaque
-    files:
-      - path: files/secrets/app-secret.yaml
+  # # Load all keys from Secret as environment variables
+  # - name: app-secrets
+  #   type: secret
+  #   secretType: Opaque  # Optional, defaults to Opaque
+  #   files:
+  #     - path: files/secrets/app-secret.yaml
 
 # Resource requests and limits
 resources:
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 50m
+    memory: 64Mi
   limits:
-    cpu: 500m
-    memory: 512Mi
+    cpu: 200m
+    memory: 256Mi
 
 # Container security context
-containerSecurityContext:
-  runAsUser: 2000
-  readOnlyRootFilesystem: true
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
+containerSecurityContext: []
+  # runAsUser: 2000
+  # readOnlyRootFilesystem: true
+  # allowPrivilegeEscalation: false
+  # capabilities:
+  #   drop:
+  #     - ALL
 
 # Liveness probe - checks if container is alive
 livenessProbe:
-  enable: true
+  enable: false
   httpGet:
     path: /healthz
     port: 8080
@@ -152,7 +153,7 @@ livenessProbe:
 
 # Readiness probe - checks if container is ready to serve traffic
 readinessProbe:
-  enable: true
+  enable: false
   httpGet:
     path: /ready
     port: 8080
@@ -167,7 +168,7 @@ service:
 
 # Horizontal Pod Autoscaler - auto-scale based on metrics
 hpa:
-  enable: true
+  enable: false
   labels:
     hpa-label: custom-hpa
   minReplicas: 2
@@ -177,10 +178,26 @@ hpa:
 
 # Pod Disruption Budget - ensures minimum availability during disruptions
 pdb:
-  enable: true
+  enable: false
   labels:
     pdb-label: custom-pdb
   annotations:
     description: "Ensures high availability"
   minAvailable: 1  # Minimum pods that must be available
   maxUnavailable: ""  # Alternative: maximum pods that can be unavailable
+
+# VirtualService configuration (Istio)
+virtualService:
+  enabled: false
+  gateway: "istio-system/gateway"
+  hosts: []
+    # - my-app.example.com
+  http: []
+    # - match:
+    #   - uri:
+    #       prefix: /custom
+    #   route:
+    #   - destination:
+    #       host: other-service
+    #       port:
+    #         number: 80

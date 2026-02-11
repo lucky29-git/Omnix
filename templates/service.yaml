@@ -16,10 +16,11 @@ spec:
     {{- range $key, $value := $.Values.global.labels}}
     {{ $key }}: {{ $value}}
     {{- end}}
-  ports:       
-    {{- range $key, $value := $.Values.ports}}
-    - name: {{ $key }}
-      port: {{ $value }}
-      targetPort: {{ $value}}
-      {{- end }}
+  ports:
+    {{- range $.Values.ports }}
+    - name: {{ .name }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+      protocol: TCP
+    {{- end }}
 {{- end}}

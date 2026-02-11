@@ -85,9 +85,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- with .Values.ports }}
           ports:
-            {{- range $key, $value := . }}
-            - containerPort: {{ $value }}
-              name: {{ $key }}
+            {{- range . }}
+            - containerPort: {{ .targetPort }}
+              name: {{ .name }}
+              protocol: TCP
             {{- end }}
           {{- end }}
           {{- with .Values.containerArgs }}

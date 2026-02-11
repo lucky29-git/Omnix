@@ -79,11 +79,17 @@ containerCmd: {}
 containerArgs: {}
   # - "--config=/etc/config/app.conf"
 
-# Container ports (map of name: port)
-ports: {}
-  # http: 80
-  # https: 443
-  # grpc: 50051
+# Container ports (list of objects with separate service port and container port)
+# - name: port name (e.g. http, https, grpc)
+#   port: service port (what clients connect to)
+#   targetPort: container port (what the app listens on)
+ports: []
+  # - name: http
+  #   port: 80
+  #   targetPort: 8080
+  # - name: grpc
+  #   port: 50051
+  #   targetPort: 50051
 
 # Direct environment variables (key-value pairs)
 env: {}

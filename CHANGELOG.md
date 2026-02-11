@@ -13,6 +13,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for initContainers and sidecars
 - Job and CronJob templates
 
+## [0.1.2] - 2026-02-11
+
+### Changed
+- **BREAKING: `ports` structure changed from map to list of objects.** Each port entry now has `name`, `port` (service port), and `targetPort` (container port). This allows the Service port (e.g., 80) to differ from the container port (e.g., 3000).
+  - Old: `ports: { http: 80 }` → service port 80, container port 80, target port 80
+  - New: `ports: [{ name: http, port: 80, targetPort: 3000 }]` → service port 80, container port 3000, target port 3000
+- Updated `deployment.yaml` to use `targetPort` for `containerPort`.
+- Updated `service.yaml` to use separate `port` and `targetPort`.
+
 ## [0.1.1] - 2026-02-11
 
 ### Fixed
@@ -57,9 +66,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
+- **v0.1.2** - BREAKING: ports structure supports separate service/container ports
 - **v0.1.1** - Fix pod label consistency + clean defaults
 - **v0.1.0** - Initial public release
 
-[Unreleased]: https://github.com/YOUR_USERNAME/omnix-chart/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/YOUR_USERNAME/omnix-chart/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/YOUR_USERNAME/omnix-chart/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/YOUR_USERNAME/omnix-chart/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/YOUR_USERNAME/omnix-chart/releases/tag/v0.1.0

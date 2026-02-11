@@ -40,6 +40,9 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: {{ include "omnix.fullname" $ }}
+        {{- range $key, $value := .Values.global.labels }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
         {{- range $key, $value := .Values.pod.labels }}
         {{ $key }}: {{ $value }}
         {{- end }}
